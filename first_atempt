@@ -1,24 +1,31 @@
 import urllib.request
 import bs4
 
-
 x = urllib.request.urlopen("https://www.otomoto.pl/osobowe/abarth")
 soup = bs4.BeautifulSoup(x.read(), 'html.parser')
 naglowki = soup.find_all(class_='e1p19lg76 e1p19lg720 ooa-10p8u4x er34gjf0')
+
+
 def gathering_adreses(naglowki):
- adreses=[]
- for i in naglowki:
-  start_adres = str(i).find("https")#Find adress start of ad
-  end_adres = str(i).find("html")# find adress end of ad
-  start_adres -= 1
-  end_adres += 5
-  adres=""
-  for html_len in range(start_adres,end_adres):
-   adres += str(i)[html_len] #sklej cały adres ogłoeszenia
-  adreses.append(adres) #dodaj adres do listy ogłoszeń
- return adreses
+    """ 1. extracting adresses
+        2. returning them in correct form
+        """
+    adresses = []
+    for i in naglowki:
+        start_adres = str(i).find("https")  # Find adress start of ad
+        end_adres = str(i).find("html")  # find adress end of ad
+        start_adres -= 1
+        end_adres += 5
+        adres = ""
+        for html_len in range(start_adres, end_adres):
+            adres += str(i)[html_len]  # sklej cały adres ogłoeszenia
+        adresses.append(adres)  # dodaj adres do listy ogłoszeń
+    return adresses
+
+
 res = gathering_adreses(naglowki)
 #ad = urllib.request.urlopen(str(res[0]))
-#adsoup = bs4.BeautifulSoup(ad.read(), 'html.parser')
+ad = urllib.request.urlopen("https://www.otomoto.pl/oferta/abarth-595-bogate-wyposazenie-klimatronik-sportowe-zawieszenie-ID6F6EV2.html")
+# adsoup = bs4.BeautifulSoup(ad.read(), 'html.parser')
 print(str(res[0]))
-#print(adsoup)
+# print(adsoup)
